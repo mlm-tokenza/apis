@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package mlmbox.type;
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/type/bonus;bonus_pb";
+
+message Bonus {
+  enum Kind {
+    UNKNOWN = 0;
+    GIFT = 1;
+    BONUS_RANK = 2;
+    BONUS_DIRECT = 3;
+    BONUS_FARMING = 4;
+    BONUS_BINARY = 5;
+    BONUS_BINARY_MATCHING = 6;
+    BONUS_STARTER_INIT = 7;
+    BONUS_STARTER_INVITE_PARTNER = 8;
+    BONUS_STARTER_OPEN_FARMING = 9;
+  }
+  message ID {
+    uint32 bonus_id = 1;
+  }
+  message LevelPercent {
+    uint32 level = 1;
+    string percent = 2;
+  }
+  Kind bonus_id = 1;
+  uint32 asset_id = 2;
+  string earned_value = 3;
+}
+message IncomeBonus {
+  uint32 asset_id = 1;
+  string total_earned_value = 2;
+  repeated Bonus bonuses = 3;
+}

@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package mlmbox.client.network.v1;
+
+import "mlmbox/type/account.proto";
+import "mlmbox/type/limit.proto";
+import "mlmbox/type/sort.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/client/network/v1;service_client_network_pb";
+
+service Network {
+  rpc PartnerGet (mlmbox.type.Account.ID) returns (mlmbox.type.Account.ShortInfo) {} // отобразить данные выбранного пользователя в системе (глобальный доступ)
+  rpc PartnerSearch (AccountsSearchRequest) returns (stream mlmbox.type.Account.ShortInfo) {} // поиск пользователей в системе с соответствием префикса логина (глобальный доступ)
+  rpc TeamInfo (TeamRequest) returns (TeamResponse) {} // отобразить данные выбранного пользователя (+лично приглашенных партнеров) в системе (доступ по персональной реферальной структуре)
+  rpc TeamSearch (AccountsSearchRequest) returns (stream mlmbox.type.Account.ShortInfo) {} // поиск пользователей в системе с соответствием префикса логина (доступ по персональной реферальной структуре)
+  rpc TeamPartnerList (TeamPartnerListRequest) returns (stream mlmbox.type.Account.FullInfo) {} // отобразить список лично приглашенных партнеров выбранного пользователя (доступ по персональной реферальной структуре)
+}
+
+message AccountsSearchRequest {
+  string login_prefix = 1;
+  mlmbox.type.Limit limit = 2;
+}
+message TeamRequest {
+  mlmbox.type.Account.ID view_partner = 1;
+  mlmbox.type.Sort partners_sort = 2;
+}
+message TeamResponse {
+  mlmbox.type.Account.FullInfo account = 1;
+  repeated mlmbox.type.Account.FullInfo partners = 2;
+}
+message TeamPartnerListRequest {
+  mlmbox.type.Account.ID view_partner = 1;
+  uint32 step_referral_line = 2;
+  mlmbox.type.Sort partners_sort = 3;
+}

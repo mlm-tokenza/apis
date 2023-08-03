@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package mlmbox.type;
+import "mlmbox/type/bonus.proto";
+import "mlmbox/type/farming.proto";
+import "mlmbox/type/google_authenticator.proto";
+import "mlmbox/type/relationship.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/type/account;account_pb";
+
+message Account {
+  message ID {
+    oneof unique_field {
+      uint32 account_id = 1;
+      string account_login = 2;
+    }
+  }
+  message ShortInfo {
+    uint32 account_id = 1;
+    string login = 2;
+    string email = 3;
+    uint32 referral_id = 4;
+    string referral_login = 5;
+    uint32 current_rank_id = 6;
+    uint32 current_package_id = 7;
+    mlmbox.type.Relationship relationship = 8;
+  }
+  message FullInfo {
+    message AccountsStatistics {
+      message Contract {
+        uint32 quantity = 1;
+        string turnover = 2;
+        uint32 owners_quantity = 3;
+      }
+      uint32 quantity = 1;
+      Contract total = 2;
+      Contract activated = 3;
+      string income_per_day = 4;
+    }
+    message LevelAccountsStatistics {
+      message Contract {
+        uint32 quantity = 1;
+        string turnover = 2;
+        uint32 owners_quantity = 3;
+      }
+      uint32 level = 1;
+      uint32 quantity = 2;
+      Contract total = 3;
+      Contract activated = 4;
+      string income_per_day = 5;
+    }
+
+    uint32 account_id = 1;
+    string login = 2;
+    string email = 3;
+    uint32 referral_id = 4;
+    string referral_login = 5;
+    uint32 current_rank_id = 6;
+    uint32 current_package_id = 7;
+    mlmbox.type.Relationship relationship = 8;
+    AccountsStatistics self_statistics = 9;
+    AccountsStatistics partners_statistics = 10;
+    AccountsStatistics team_statistics = 11;
+    repeated LevelAccountsStatistics levels = 12;
+  }
+//  message IncomeForecast {
+//    string passive_income_per_day_value = 1;
+//    string passive_direct_income_per_day_value = 2;
+//    string rank_direct_income_per_day_value = 3;
+//    string total_value = 4;
+//  }
+
+  FullInfo info = 1;
+  mlmbox.type.GoogleAuthenticator google_authenticator = 2;
+  repeated mlmbox.type.Farming.Account farming = 3;
+  repeated mlmbox.type.IncomeBonus income_bonuses = 4;
+  string locale = 5; // language identifier (en-US, ...)
+  bool is_admin = 6;
+}

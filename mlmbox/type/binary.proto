@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package mlmbox.type;
+import "mlmbox/type/account.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/type/binary;binary_pb";
+
+message Binary {
+  message Position {
+    message ID {
+      uint32 view_position_id = 1;
+    }
+    message Line {
+      uint32 position_line = 1; // идентификатор ответвления
+      string balance_value = 2; // баланс в ответвлении
+      string turnover_value = 3; // товарооборот в ответвлении
+      uint32 positions_quantity = 4; // кол-во позиций в ответвлении
+    }
+    message Settings {
+      uint32 user_side = 1; // выбор ответвления пользователем
+      uint32 system_side = 2; // ответвление в которое направит система по факту
+    }
+    uint32 position_id = 1; // идентификатор позиции (идентичен с идентификатором аккаунта)
+    uint32 position_ref_id = 2; // идентификатор вышестоящей позиции
+    uint32 position_ref_line = 3; // идентификатор ответвления вышестоящей позиции
+    uint32 position_width = 4; // кол-во доступных ответвлений
+    uint32 position_level = 5; // уровень глубины по соотношению к авторизованному пользователю
+    Settings settings = 6;
+    mlmbox.type.Account.ShortInfo account = 7;
+    repeated Line lines = 8;
+  }
+
+  uint32 self_position_id = 1;
+  uint32 view_position_id = 2;
+  repeated Position positions = 3;
+}

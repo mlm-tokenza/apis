@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package mlmbox.client.career.v1;
+
+import "mlmbox/type/career.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/client/career/v1;service_client_career_pb";
+
+service Career {
+  rpc Info(google.protobuf.Empty) returns (mlmbox.type.Career) {}
+  rpc RankGet(mlmbox.type.Career.Rank.ID) returns (mlmbox.type.Career.Rank) {}
+  rpc RankAll(google.protobuf.Empty) returns (stream mlmbox.type.Career.Rank) {}
+}

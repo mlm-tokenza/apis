@@ -1,0 +1,213 @@
+syntax = "proto3";
+
+package mlmbox.local.finance;
+
+import "mlmbox/type/wallet.proto";
+import "mlmbox/local/type/account.proto";
+import "mlmboxmerch/type/block.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/local/finance;service_local_finance_pb";
+
+service Wallet {
+  rpc Info (mlmbox.local.type.Account.ID) returns (InfoResponse) {}
+  rpc AssetGet (AssetGetRequest) returns (AssetGetResponse) {}
+  rpc AssetBalanceGet (AssetBalanceGetRequest) returns (AssetBalanceGetResponse) {}
+  rpc AssetsAll (mlmbox.local.type.Account.ID) returns (AssetsAllResponse) {}
+  rpc AssetTransactionGet (AssetTransactionGetRequest) returns (AssetTransactionGetResponse) {}
+  rpc AssetTransactionList (AssetTransactionListRequest) returns (AssetTransactionListResponse) {}
+  rpc AssetBalanceHistoryGet (AssetGetRequest) returns (AssetBalanceHistoryGetResponse) {}
+  rpc AssetBalanceHistoryList (AssetTransactionListRequest) returns (AssetBalanceHistoryListResponse) {}
+  rpc ProcessingsGet (ProcessingsGetRequest) returns (ProcessingsGetResponse) {}
+  rpc ProcessingsAll (mlmbox.local.type.Account.ID) returns (ProcessingsAllResponse) {}
+  rpc ProcessingShortInfo (mlmbox.type.Wallet.Processing.ID) returns (ProcessingsGetResponse) {}
+  rpc ProcessingAssetWithdrawalSettingsGet (mlmbox.type.Wallet.Processing.Asset.ID) returns (ProcessingAssetWithdrawalSettingsResponse) {}
+  rpc ProcessingAssetWithdrawalSettingsSet (ProcessingAssetWithdrawalSettingsSetRequest) returns (ProcessingAssetWithdrawalSettingsResponse) {}
+
+  rpc WithdrawalHistoryGet (mlmbox.type.Wallet.WithdrawalTask.ID) returns (WithdrawalHistoryGetResponse) {}
+  rpc WithdrawalHistoryList (WithdrawalHistoryListRequest) returns (WithdrawalHistoryListResponse) {}
+
+  rpc ProcessingBitcoinDepositLastModificationID (google.protobuf.Empty) returns (ProcessingTronModificationResponse) {}
+  rpc ProcessingBitcoinDeposit (DepositTransaction) returns (ProcessingTronModificationResponse) {}
+  rpc ProcessingTronDepositTRXLastModificationID (google.protobuf.Empty) returns (ProcessingTronModificationResponse) {}
+  rpc ProcessingTronDepositTRX (DepositTransaction) returns (ProcessingTronModificationResponse) {}
+  rpc ProcessingTronDepositTRC20LastModificationID (google.protobuf.Empty) returns (ProcessingTronModificationResponse) {}
+  rpc ProcessingTronDepositTRC20 (DepositTransaction) returns (ProcessingTronModificationResponse) {}
+
+  rpc ProcessingBitcoinWithdrawalLastModificationID (google.protobuf.Empty) returns (ProcessingTronModificationResponse) {}
+  rpc ProcessingBitcoinWithdrawal (WithdrawalTransaction) returns (ProcessingTronModificationResponse) {}
+  rpc ProcessingTronWithdrawalTRXLastModificationID (google.protobuf.Empty) returns (ProcessingTronModificationResponse) {}
+  rpc ProcessingTronWithdrawalTRX (WithdrawalTransaction) returns (ProcessingTronModificationResponse) {}
+  rpc ProcessingTronWithdrawalTRC20LastModificationID (google.protobuf.Empty) returns (ProcessingTronModificationResponse) {}
+  rpc ProcessingTronWithdrawalTRC20 (WithdrawalTransaction) returns (ProcessingTronModificationResponse) {}
+
+  rpc WithdrawalCheck (WithdrawalCheckRequest) returns (WithdrawalCheckResponse) {}
+  rpc WithdrawalCreate (WithdrawalCreateRequest) returns (AssetTransactionGetResponse) {}
+  rpc WithdrawalEnabledGet (mlmbox.local.type.Account.ID) returns (WithdrawalEnabledGetResponse) {}
+  rpc WithdrawalEnabledSet (WithdrawalEnabledSetRequest) returns (Error) {}
+}
+
+message Error {
+  enum ID {
+    OK = 0;
+    ACCOUNT_UNKNOWN = 1;
+    ACCOUNT_NOT_FOUND = 2;
+    ASSET_UNKNOWN = 3;
+    ASSET_NOT_FOUND = 4;
+    TRANSACTION_UNKNOWN = 5;
+    TRANSACTION_NOT_FOUND = 6;
+    PROCESSING_UNKNOWN = 7;
+    PROCESSING_NOT_FOUND = 8;
+    PROCESSING_ADDRESS_UNKNOWN = 9;
+    PROCESSING_ADDRESS_WRONG = 10;
+    AMOUNT_VALUE_UNKNOWN = 11;
+    AMOUNT_VALUE_WRONG = 12;
+    FEE_VALUE_WRONG = 13;
+    BALANCE_NOT_ENOUGH = 14;
+    OPERATION_UNAVAILABLE = 15;
+    SOURCE_ASSET_UNKNOWN = 16;
+    SOURCE_ASSET_NOT_FOUND = 17;
+    TARGET_ASSET_UNKNOWN = 18;
+    TARGET_ASSET_NOT_FOUND = 19;
+  }
+  ID error_id = 1;
+}
+message InfoResponse {
+  Error.ID error_id = 1;
+  mlmbox.type.Wallet wallet = 2;
+}
+message AssetGetRequest {
+  uint32 account_id = 1;
+  uint32 asset_id = 2;
+  uint32 limit_value = 3;
+  bool is_sort_asc = 4;
+  repeated mlmbox.type.Wallet.Asset.Transaction.Kind.ID filter_kind_ids = 5;
+}
+message AssetGetResponse {
+  Error.ID error_id = 1;
+  mlmbox.type.Wallet.Asset asset = 2;
+}
+message AssetBalanceGetRequest {
+  uint32 account_id = 1;
+  uint32 asset_id = 2;
+}
+message AssetBalanceGetResponse {
+  Error.ID error_id = 1;
+  string asset_balance = 2;
+}
+message AssetsAllResponse {
+  Error.ID error_id = 1;
+  repeated mlmbox.type.Wallet.Asset assets = 2;
+}
+message AssetTransactionGetRequest {
+  uint32 account_id = 1;
+  uint32 asset_id = 2;
+  uint32 transaction_id = 3;
+}
+message AssetTransactionGetResponse {
+  Error.ID error_id = 1;
+  mlmbox.type.Wallet.Asset.Transaction transaction = 2;
+}
+message AssetTransactionListRequest {
+  uint32 account_id = 1;
+  uint32 asset_id = 2;
+  uint32 step_transaction_id = 3;
+  uint32 limit_value = 4;
+  bool is_sort_asc = 5;
+  repeated mlmbox.type.Wallet.Asset.Transaction.Kind.ID filter_kind_ids = 6;
+}
+message AssetTransactionListResponse {
+  Error.ID error_id = 1;
+  repeated mlmbox.type.Wallet.Asset.Transaction transactions = 2;
+}
+message AssetBalanceHistoryResponse {
+  Error.ID error_id = 1;
+  mlmbox.type.Wallet.Asset.BalanceHistory result = 2;
+}
+message AssetBalanceHistoryGetResponse {
+  Error.ID error_id = 1;
+  mlmbox.type.Wallet.Asset.BalanceHistory result = 2;
+}
+message AssetBalanceHistoryListResponse {
+  Error.ID error_id = 1;
+  mlmbox.type.Wallet.Asset.BalanceHistory.Transaction result = 2;
+}
+message ProcessingsGetRequest {
+  uint32 account_id = 1;
+  uint32 processing_id = 2;
+}
+message ProcessingsGetResponse {
+  Error.ID error_id = 1;
+  mlmbox.type.Wallet.Processing processing = 2;
+}
+message ProcessingAssetWithdrawalSettingsResponse {
+  Error.ID error_id = 1;
+  mlmbox.type.Wallet.Processing.Asset processing_asset = 2;
+}
+message WithdrawalHistoryGetResponse {
+  Error.ID error_id = 1;
+  mlmbox.type.Wallet.WithdrawalTask result = 2;
+}
+message WithdrawalHistoryListRequest {
+  uint32 step_withdrawal_id = 1;
+  uint32 limit_value = 2;
+  bool is_sort_asc = 3;
+}
+message WithdrawalHistoryListResponse {
+  Error.ID error_id = 1;
+  repeated mlmbox.type.Wallet.WithdrawalTask result = 2;
+}
+message ProcessingAssetWithdrawalSettingsSetRequest {
+  uint32 processing_id = 1;
+  uint32 asset_id = 2;
+  bool enabled = 3;
+  string fee_base = 4;
+  string fee_percent = 5;
+  string operation_value_min = 6;
+  string operation_value_max = 7;
+}
+message ProcessingsAllResponse {
+  Error.ID error_id = 1;
+  repeated mlmbox.type.Wallet.Processing processings = 2;
+}
+message ProcessingTronModificationResponse {
+  Error.ID error_id = 1;
+  uint32 modification_id = 2;
+}
+message WithdrawalCheckRequest {
+  uint32 account_id = 1;
+  uint32 processing_id = 2;
+  uint32 asset_id = 3;
+  string operation_amount = 4;
+}
+message WithdrawalCheckResponse {
+  Error.ID error_id = 1;
+  string operation_amount = 2;
+  string operation_fee = 3;
+  string operation_total = 4;
+}
+message WithdrawalCreateRequest {
+  uint32 account_id = 1;
+  uint32 processing_id = 2;
+  uint32 asset_id = 3;
+  string operation_amount = 4;
+  string operation_fee = 5;
+  string address = 6;
+}
+message WithdrawalEnabledGetResponse {
+  Error.ID error_id = 1;
+  bool enabled = 2;
+}
+message WithdrawalEnabledSetRequest {
+  uint32 account_id = 1;
+  bool enabled = 2;
+}
+
+message DepositTransaction {
+  uint64 block_height = 1;
+  repeated mlmboxmerch.type.BlockUpdateRequest.DepositTransaction transactions = 2;
+}
+message WithdrawalTransaction {
+  uint64 block_height = 1;
+  repeated mlmboxmerch.type.BlockUpdateRequest.WithdrawalTransaction transactions = 2;
+}

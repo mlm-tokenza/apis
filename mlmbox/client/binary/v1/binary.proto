@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package mlmbox.client.binary.v1;
+
+import "mlmbox/type/binary.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/client/binary/v1;service_client_binary_pb";
+
+service Account {
+  rpc Info (InfoRequest) returns (mlmbox.type.Binary) {}
+  rpc Search (SearchRequest) returns (stream mlmbox.type.Binary.Position) {}
+  rpc SettingsSideSet (SettingsSideSetRequest) returns (mlmbox.type.Binary.Position.Settings) {}
+}
+
+message InfoRequest {
+  uint32 view_position_id = 1;
+  uint32 view_level = 2;
+}
+message SearchRequest {
+  string login_prefix = 1;
+  uint32 limit_value = 2;
+}
+message SettingsSideSetRequest {
+  uint32 user_side = 1;
+}

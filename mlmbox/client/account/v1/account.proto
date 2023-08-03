@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package mlmbox.client.account.v1;
+
+import "mlmbox/type/account.proto";
+import "mlmbox/type/confirmation.proto";
+import "mlmbox/type/locale.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/client/account/v1;service_client_account_pb";
+
+service Account {
+  rpc Info (google.protobuf.Empty) returns (mlmbox.type.Account) {} // display account information
+  rpc PasswordSet (AccountPasswordSetRequest) returns (mlmbox.type.Confirmation) {} // change password
+  rpc EmailSet (AccountEmailSetRequest) returns (mlmbox.type.Confirmation) {} // replace the main contact with a new contact
+  rpc LocaleSet (mlmbox.type.Locale.ID) returns (google.protobuf.Empty) {} // update the language of communication
+}
+
+message AccountPasswordSetRequest {
+  string password_new = 1;
+}
+message AccountEmailSetRequest {
+  string email_new = 1;
+}

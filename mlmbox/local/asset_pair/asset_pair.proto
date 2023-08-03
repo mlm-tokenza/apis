@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package mlmbox.local.asset_pair;
+import "mlmbox/local/type/asset.proto";
+import "mlmbox/type/exchanger.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/local/asset_pair;service_local_asset_pair_pb";
+
+service AssetPair {
+  rpc ExchangerRateGetByID(mlmbox.local.type.AssetPair.ID) returns (AssetPairExchangerRateResponse) {}
+  rpc ExchangerRateGetByName(mlmbox.local.type.AssetPair.Name) returns (AssetPairExchangerRateResponse) {}
+  rpc ExchangerRateGetByAssetPairs(mlmbox.local.type.AssetPair.Assets) returns (AssetPairExchangerRateResponse) {}
+  rpc ExchangerRateAll(google.protobuf.Empty) returns (AssetPairExchangerRateAllResponse) {}
+  rpc ExchangerRateSetByName(AssetPairExchangerRateSetByNameRequest) returns (AssetPairExchangerRateResponse) {}
+}
+
+message AssetPairError {
+  enum ID {
+    OK = 0;
+    ASSET_PAIR_UNKNOWN = 1;
+    ASSET_PAIR_NOT_FOUND = 2;
+    ASSET_PAIR_RATE_BUY_WRONG = 3;
+    ASSET_PAIR_RATE_SELL_WRONG = 4;
+  }
+  ID error_id = 1;
+}
+message AssetPairExchangerRateResponse {
+  AssetPairError.ID error_id = 1;
+  mlmbox.type.Exchanger.Rate exchanger_rate = 2;
+}
+message AssetPairExchangerRateAllResponse {
+  AssetPairError.ID error_id = 1;
+  repeated mlmbox.type.Exchanger.Rate exchanger_rates = 2;
+}
+message AssetPairExchangerRateSetByNameRequest {
+  string asset_pair_name = 1;
+  string rate_buy = 2;
+  string rate_sell = 3;
+}

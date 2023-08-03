@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package mlmbox.type;
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/type/career;career_pb";
+
+message Career {
+  message Rank {
+    message ID {
+      uint32 rank_id = 1;
+    }
+    message ConditionPartnersRank {
+      uint32 rank_id = 1; // условие обозначающее необходимое достижение ранга среди лично приглашенных пользователя
+      uint32 quantity = 2; // условие обозначающее количество лично приглашенных пользователя достигшие указанный ранг
+      uint32 binary_line1_quantity = 3;
+      uint32 binary_line2_quantity = 4;
+    }
+    message Gift {
+      enum Kind {
+        UNKNOWN = 0;
+        GOODS = 1;
+        MONEY = 2;
+      }
+      message Goods {
+        string name = 1;
+        uint32 quantity = 2;
+      }
+      message Money {
+        uint32 asset_id = 1;
+        string asset_bonus = 2;
+      }
+      Kind kind = 1;
+      Goods goods = 2;
+      Money money = 3;
+    }
+    message Process {
+      uint32 rank_id = 1; // достигаемый ранг
+      repeated ConditionPartnersRank achievement_partners_ranks = 2; // достигнутое значение количество лично приглашенных с необходимым рангом
+      uint32 achievement_partners_total_contracts_owners_quantity = 3;
+      string achievement_binary_line_total_turnover_least = 4;
+    }
+    uint32 rank_id = 1; // идентификатор ранга
+    string rank_title = 2; // название ранга
+    repeated ConditionPartnersRank condition_partners_ranks = 3;
+    uint32 condition_partners_total_contracts_owners_quantity = 4;
+    string condition_binary_line_total_turnover_least = 5;
+    repeated string bonus_binary_matching_level_percent = 6;
+    repeated Gift gifts = 7;
+  }
+  uint32 current_rank_id = 1;
+  Rank.Process next_rank_process = 2;
+  repeated Rank ranks = 3;
+}

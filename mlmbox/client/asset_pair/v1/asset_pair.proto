@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package mlmbox.client.asset_pair.v1;
+
+import "mlmbox/type/asset_pair.proto";
+import "mlmbox/type/exchanger.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/client/asset_pair/v1;service_client_asset_pair_pb";
+
+service AssetPair {
+  rpc Get(mlmbox.type.AssetPair.ID) returns (mlmbox.type.Exchanger.Rate) {}
+  rpc All(google.protobuf.Empty) returns (stream mlmbox.type.Exchanger.Rate) {}
+}

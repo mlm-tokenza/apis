@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package mlmbox.local.career;
+import "mlmbox/type/career.proto";
+import "mlmbox/local/type/account.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/local/career;service_local_career_pb";
+
+service Career {
+  rpc Info(mlmbox.local.type.Account.ID) returns (InfoResponse) {}
+  rpc RankGet(mlmbox.type.Career.Rank.ID) returns (RankGetResponse) {}
+  rpc RankAll(google.protobuf.Empty) returns (RankAllResponse) {}
+}
+
+message Error {
+  enum ID {
+    OK = 0;
+    RANK_UNKNOWN = 1;
+    RANK_NOT_FOUND = 2;
+    ACCOUNT_UNKNOWN = 3;
+    ACCOUNT_NOT_FOUND = 4;
+  }
+  ID error_id = 1;
+}
+message InfoResponse {
+  Error.ID error_id = 1;
+  mlmbox.type.Career career = 2;
+}
+message RankGetResponse {
+  Error.ID error_id = 1;
+  mlmbox.type.Career.Rank rank = 2;
+}
+message RankAllResponse {
+  Error.ID error_id = 1;
+  repeated mlmbox.type.Career.Rank ranks = 2;
+}

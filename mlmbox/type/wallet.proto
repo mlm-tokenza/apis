@@ -1,0 +1,102 @@
+syntax = "proto3";
+
+package mlmbox.type;
+
+import "mlmbox/type/bonus.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/type/wallet;wallet_pb";
+
+message Wallet {
+  message Asset {
+    message Transaction {
+      message ID {
+        uint32 asset_id = 1;
+        uint32 transaction_id = 2;
+      }
+      message Kind {
+        enum ID {
+          UNKNOWN = 0;
+          CANCELED = 1;
+          EARNED = 2; // заработано
+          SPENT = 3; // потрачено
+          DEPOSIT = 4; // пополнение
+          WITHDRAWAL = 5; // вывод
+          DEPOSIT_WALLET_TRANSFER = 6; // перевод между кошельками (получение)
+          WITHDRAWAL_WALLET_TRANSFER = 7; // перевод между кошельками (отправка)
+          EXCHANGE = 8; // обмен валюты
+        }
+        ID kind_id = 1;
+      }
+      message Status {
+        enum ID {
+          PROCESSING = 0; // заявка в процессе обработки
+          SUCCESS = 1; // заявка обработана успешно
+          REJECTED = 2; // заявка отклонена
+        }
+        ID status_id = 1;
+      }
+
+      uint32 transaction_id = 1;
+      Kind.ID kind_id = 2;
+      Status.ID status_id = 3;
+      string amount = 4;
+      string fee = 5;
+      string balance = 6;
+      uint32 created_at = 7;
+      string description = 8;
+    }
+    message BalanceHistory {
+      message Transaction {
+        uint32 transaction_id = 1;
+        string balance = 2;
+        uint32 created_at = 3;
+      }
+      uint32 asset_id = 1;
+      string asset_balance = 2;
+      repeated Transaction transactions = 3;
+    }
+
+    uint32 asset_id = 1;
+    string asset_balance = 2;
+    repeated Transaction transactions = 3;
+    mlmbox.type.IncomeBonus income_bonus = 4;
+  }
+
+  message Processing {
+    message ID {
+      uint32 processing_id = 1;
+    }
+    message Asset {
+      message ID {
+        uint32 processing_id = 1;
+        uint32 asset_id = 2;
+      }
+      uint32 asset_id = 1;
+      bool settings_deposit_enabled = 2;
+      bool settings_withdrawal_enabled = 3;
+      string settings_withdrawal_fee_base = 4;
+      string settings_withdrawal_fee_percent = 5;
+      string settings_withdrawal_operation_value_min = 6;
+      string settings_withdrawal_operation_value_max = 7;
+    }
+    uint32 processing_id = 1;
+    string processing_name = 2;
+    repeated Asset assets = 3;
+  }
+
+  message WithdrawalTask {
+    message ID {
+      uint32 withdrawal_id = 1;
+    }
+    uint32 withdrawal_id = 1;
+    uint32 processing_id = 2;
+    uint32 account_id = 3;
+    string login = 4;
+    string email = 5;
+    uint32 asset_id = 6;
+    Wallet.Asset.Transaction transaction = 7;
+  }
+
+  repeated Asset assets = 1;
+  repeated Processing processings = 2;
+}

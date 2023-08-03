@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package mlmbox.type;
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/type/payment;payment_pb";
+
+message PaymentPrice {
+  uint32 asset_id = 1;
+  string price = 2;
+  repeated uint32 payment_asset_ids = 3;
+}
+message PaymentPriceRange {
+  uint32 asset_id = 1; // валюта в которой указаны цены
+  string price_from = 2;
+  string price_to = 3;
+  repeated uint32 payment_asset_ids = 4; // список валют за которые доступно приобретение
+}

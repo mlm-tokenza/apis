@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package mlmbox.type;
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/type/asset;asset_pb";
+
+message Asset {
+  message ID {
+    oneof unique_field {
+      uint32 asset_id = 1;
+      string asset_name = 2;
+    }
+  }
+  uint32 asset_id = 1;
+  string asset_name = 2;
+  string asset_title = 3;
+  uint32 decimal = 4;
+}

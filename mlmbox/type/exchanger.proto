@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package mlmbox.type;
+import "mlmbox/type/asset_pair.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/type/exchanger;exchanger_pb";
+
+message Exchanger {
+  message Rate {
+    mlmbox.type.AssetPair asset_pair = 1;
+    string rate_buy = 2;
+    string rate_sell = 3;
+    uint32 modified_at = 4;
+  }
+}

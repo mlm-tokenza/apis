@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package mlmbox.client.finance.v1;
+
+import "mlmbox/type/confirmation.proto";
+import "mlmbox/type/sort.proto";
+import "mlmbox/type/wallet.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/client/finance/v1;service_client_finance_pb";
+
+service Wallet {
+  rpc Info (google.protobuf.Empty) returns (mlmbox.type.Wallet) {}
+  rpc AssetGet (WalletAssetGetRequest) returns (mlmbox.type.Wallet.Asset) {}
+  rpc AssetsAll (google.protobuf.Empty) returns (stream mlmbox.type.Wallet.Asset) {}
+  rpc AssetTransactionGet (mlmbox.type.Wallet.Asset.Transaction.ID) returns (mlmbox.type.Wallet.Asset.Transaction) {}
+  rpc AssetTransactionList (WalletAssetTransactionListRequest) returns (stream mlmbox.type.Wallet.Asset.Transaction) {}
+  rpc AssetBalanceHistoryGet (WalletAssetGetRequest) returns (mlmbox.type.Wallet.Asset.BalanceHistory) {}
+  rpc AssetBalanceHistoryList (WalletAssetTransactionListRequest) returns (stream mlmbox.type.Wallet.Asset.BalanceHistory.Transaction) {}
+
+  rpc ProcessingsGet (mlmbox.type.Wallet.Processing.ID) returns (mlmbox.type.Wallet.Processing) {}
+  rpc ProcessingsAll (google.protobuf.Empty) returns (stream mlmbox.type.Wallet.Processing) {}
+  rpc DepositAddress (mlmbox.type.Wallet.Processing.ID) returns (WalletDepositAddressResponse) {}
+  rpc ValidateAddress (WalletValidateAddressRequest) returns (WalletValidateAddressResponse) {}
+  rpc WithdrawalCreate (WalletWithdrawalCreateRequest) returns (mlmbox.type.Confirmation) {}
+}
+
+message WalletAssetGetRequest {
+  uint32 asset_id = 1;
+  mlmbox.type.Sort sort_transactions = 2;
+  repeated mlmbox.type.Wallet.Asset.Transaction.Kind.ID filter_kind_ids = 3;
+}
+message WalletAssetTransactionListRequest {
+  uint32 asset_id = 1;
+  uint32 step_transaction_id = 2;
+  mlmbox.type.Sort sort_transactions = 3;
+  repeated mlmbox.type.Wallet.Asset.Transaction.Kind.ID filter_kind_ids = 4;
+}
+message WalletDepositAddressResponse {
+  string address = 1;
+}
+message WalletValidateAddressRequest {
+  uint32 processing_id = 1;
+  string address = 2;
+}
+message WalletValidateAddressResponse {
+  string address = 1;
+  bool validated = 2;
+}
+message WalletWithdrawalCreateRequest {
+  uint32 processing_id = 1;
+  uint32 asset_id = 2;
+  string operation_amount = 3;
+  string address = 4;
+}

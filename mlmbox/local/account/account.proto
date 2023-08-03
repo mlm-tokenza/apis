@@ -1,0 +1,158 @@
+syntax = "proto3";
+
+package mlmbox.local.account;
+import "mlmbox/local/type/account.proto";
+import "mlmbox/type/account.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/local/account;service_local_account_pb";
+
+service Account {
+  rpc LoginToID (mlmbox.local.type.Account.Login) returns (AccountLoginToIDResponse) {}
+  rpc SignStateGetByID (mlmbox.local.type.Account.ID) returns (AccountSignStateResponse) {}
+  rpc SignStateGetByLogin (mlmbox.local.type.Account.Login) returns (AccountSignStateResponse) {}
+  rpc SignStateGetByEmail (mlmbox.local.type.Account.Email) returns (AccountSignStateResponse) {}
+  rpc ExistByLogin (AccountExistByLoginRequest) returns (AccountExistAccountResponse) {}
+  rpc ExistByEmail (AccountExistByEmailRequest) returns (AccountExistAccountResponse) {}
+
+  rpc LoginSet (AccountLoginSetRequest) returns (Error) {}
+  rpc LoginClear (mlmbox.local.type.Account.ID) returns (Error) {}
+  rpc EmailSet (AccountEmailSetRequest) returns (Error) {}
+  rpc EmailClear (mlmbox.local.type.Account.ID) returns (Error) {}
+  rpc LocaleSet (AccountLocaleSetRequest) returns (Error) {}
+  rpc LocaleClear (mlmbox.local.type.Account.ID) returns (Error) {}
+  rpc PasswordSet (AccountPasswordSetRequest) returns (Error) {}
+  rpc PasswordClear (mlmbox.local.type.Account.ID) returns (Error) {}
+  rpc Ban (mlmbox.local.type.Account.ID) returns (Error) {}
+  rpc Unban (mlmbox.local.type.Account.ID) returns (Error) {}
+
+  rpc Info (mlmbox.local.type.Account.ID) returns (AccountInfoResponse) {}
+  rpc ShortInfo(mlmbox.local.type.Account.ID) returns (AccountShortInfoResponse) {}
+  rpc SignUp (AccountSignUpRequest) returns (AccountSignUpResponse) {}
+
+  rpc NetworkAccountGet (NetworkAccountRequest) returns (NetworkAccountResponse) {}
+  rpc NetworkAccountSearch (NetworkLoginSearchRequest) returns (NetworkLoginSearchResponse) {}
+  rpc NetworkTeamInfo (NetworkTeamRequest) returns (NetworkTeamResponse) {}
+  rpc NetworkTeamSearch (NetworkLoginSearchRequest) returns (NetworkLoginSearchResponse) {}
+  rpc NetworkTeamPartnerList (NetworkTeamPartnerListRequest) returns (NetworkTeamPartnerListResponse) {}
+  rpc NetworkTeamTreeInfo (mlmbox.local.type.Account.ID) returns (NetworkTeamResponse) {}
+}
+
+message Error {
+  enum ID {
+    OK = 0;
+    ACCOUNT_UNKNOWN = 1;
+    ACCOUNT_NOT_FOUND = 2;
+    LOCALE_UNKNOWN = 3;
+    LOCALE_NOT_FOUND = 4;
+    REFERRAL_NOT_FOUND = 5;
+    LOGIN_UNKNOWN = 6;
+    LOGIN_BUSY = 7;
+    EMAIL_UNKNOWN = 8;
+    EMAIL_BUSY = 9;
+    VIEW_PARTNER_UNKNOWN = 10;
+    VIEW_PARTNER_NOT_FOUND = 11;
+    VIEW_PARTNER_NOT_ACCESS = 12;
+  }
+  ID error_id = 1;
+}
+message AccountLoginToIDResponse {
+  Error.ID error_id = 1;
+  uint32 account_id = 2;
+}
+message AccountSignStateResponse {
+  Error.ID error_id = 1;
+  mlmbox.local.type.Account.SignState sign_state = 2;
+}
+message AccountExistByLoginRequest {
+  string login = 1;
+  uint32 skip_account_id = 2;
+}
+message AccountExistByEmailRequest {
+  string email = 1;
+  uint32 skip_account_id = 2;
+}
+message AccountExistAccountResponse {
+  Error.ID error_id = 1;
+  bool exist = 2;
+}
+
+message AccountLoginSetRequest {
+  uint32 account_id = 1;
+  string login = 2;
+}
+message AccountEmailSetRequest {
+  uint32 account_id = 1;
+  string email = 2;
+}
+message AccountLocaleSetRequest {
+  uint32 account_id = 1;
+  string locale = 2;
+}
+message AccountPasswordSetRequest {
+  uint32 account_id = 1;
+  string password_hash = 2;
+}
+message AccountInfoResponse {
+  Error.ID error_id = 1;
+  mlmbox.type.Account account = 2;
+}
+message AccountShortInfoResponse {
+  Error.ID error_id = 1;
+  mlmbox.type.Account.ShortInfo account = 2;
+  string locale = 3; // language identifier (en-US, ...)
+  bool is_admin = 4;
+}
+message AccountSignUpRequest {
+  uint32 referral_id = 1;
+  string login = 2;
+  string email = 3;
+  string password_hash = 4;
+  string locale = 5;
+}
+message AccountSignUpResponse {
+  Error.ID error_id = 1;
+  uint32 account_id = 2;
+  uint32 referral_id = 3;
+  string referral_login = 4;
+  string referral_email = 5;
+}
+
+message NetworkAccountRequest {
+  uint32 account_id = 1;
+  uint32 view_account_id = 2;
+}
+message NetworkAccountResponse {
+  Error.ID error_id = 1;
+  mlmbox.type.Account.ShortInfo account = 2;
+}
+message NetworkLoginSearchRequest {
+  uint32 account_id = 1;
+  string login_prefix = 2;
+  uint32 limit_value = 3;
+}
+message NetworkLoginSearchResponse {
+  Error.ID error_id = 1;
+  repeated mlmbox.type.Account.ShortInfo accounts = 2;
+}
+message NetworkTeamRequest {
+  uint32 account_id = 1;
+  uint32 view_account_id = 2;
+  uint32 limit_value = 3;
+  bool is_sort_asc = 4;
+}
+message NetworkTeamResponse {
+  Error.ID error_id = 1;
+  mlmbox.type.Account.FullInfo account = 2;
+  repeated mlmbox.type.Account.FullInfo partners = 3;
+}
+message NetworkTeamPartnerListRequest {
+  uint32 account_id = 1;
+  uint32 view_account_id = 2;
+  uint32 step_referral_line = 3;
+  uint32 limit_value = 4;
+  bool is_sort_asc = 5;
+}
+message NetworkTeamPartnerListResponse {
+  Error.ID error_id = 1;
+  repeated mlmbox.type.Account.FullInfo partners = 2;
+}

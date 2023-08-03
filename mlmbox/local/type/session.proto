@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package mlmbox.local.type;
+
+import "mlmbox/type/session.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/local/type/session;local_session_pb";
+
+message Session {
+  message ID {
+    uint32 account_id = 1;
+    uint32 session_id = 2;
+  }
+  uint32 account_id = 1;
+  uint32 session_id = 2;
+  uint32 created_at = 3;
+  uint32 last_used_at = 4;
+  mlmbox.type.Session.Description description = 5;
+}
