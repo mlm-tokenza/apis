@@ -6,7 +6,7 @@ import "mlmbox/type/binary.proto";
 
 option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/client/binary/v1;service_client_binary_pb";
 
-service Account {
+service Binary {
   rpc Info (InfoRequest) returns (mlmbox.type.Binary) {}
   rpc Search (SearchRequest) returns (stream mlmbox.type.Binary.Position) {}
   rpc SettingsSideSet (SettingsSideSetRequest) returns (mlmbox.type.Binary.Position.Settings) {}
