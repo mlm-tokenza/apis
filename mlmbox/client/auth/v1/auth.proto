@@ -24,7 +24,6 @@ message SignUpRequest {
   string email = 3; // account email
   string password = 4; // account password
   string locale = 5; // language identifier (en-US, ...)
-  string country = 6; // country identifier (UA, ...)
 }
 message PasswordRecoveryRequest {
   string email = 1; // account email

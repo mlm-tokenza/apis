@@ -3,6 +3,7 @@ syntax = "proto3";
 package mlmbox.client.binary.v1;
 
 import "mlmbox/type/binary.proto";
+import "mlmbox/type/limit.proto";
 
 option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/client/binary/v1;service_client_binary_pb";
 
@@ -18,7 +19,7 @@ message InfoRequest {
 }
 message SearchRequest {
   string login_prefix = 1;
-  uint32 limit_value = 2;
+  mlmbox.type.Limit limit = 2;
 }
 message SettingsSideSetRequest {
   uint32 user_side = 1;
