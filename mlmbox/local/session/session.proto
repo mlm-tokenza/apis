@@ -12,8 +12,8 @@ service Session {
   rpc Get (Request) returns (Response) {}
   rpc GetWithExtend (Request) returns (Response) {}
   rpc Create (SessionCreateRequest) returns (Response) {}
-  rpc IsActivated (mlmbox.local.type.Session.ID) returns (IsActivatedResponse) {}
-  rpc IsActivatedWithExtend (mlmbox.local.type.Session.ID) returns (IsActivatedResponse) {}
+  rpc IsActivated (mlmbox.local.type.Session.ID) returns (Error) {}
+  rpc IsActivatedWithExtend (mlmbox.local.type.Session.ID) returns (Error) {}
   rpc AllByAccount (AllByAccountRequest) returns (AllByAccountResponse) {}
   rpc DeactivateByAccount (mlmbox.local.type.Session.ID) returns (DeactivateResponse) {}
   rpc DeactivateAllByAccount (mlmbox.local.type.Account.ID) returns (DeactivateResponse) {}
@@ -49,10 +49,6 @@ message SessionCreateRequest {
   uint32 created_at = 2;
   mlmbox.type.Session.Description description = 3;
   bool show_description = 4;
-}
-message IsActivatedResponse {
-  Error.ID error_id = 1;
-  bool activated = 2;
 }
 message AllByAccountRequest {
   uint32 account_id = 1;
