@@ -8,4 +8,5 @@ message AccessToken {
   uint32 account_id = 1;
   uint32 session_id = 2;
   uint32 confirmation_id = 3;
+  uint32 bot_id = 4;
 }
