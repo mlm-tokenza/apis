@@ -26,6 +26,7 @@ message Notification {
     uint32 current_rank_id = 6;
     uint32 current_package_id = 7;
     Settings settings = 8;
+    repeated mlmbox.type.Wallet.Asset.Summary wallet = 9;
   }
   message Event {
     message Partner {

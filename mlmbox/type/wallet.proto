@@ -55,6 +55,10 @@ message Wallet {
       string asset_balance = 2;
       repeated Transaction transactions = 3;
     }
+    message Summary {
+      uint32 asset_id = 1;
+      string asset_balance = 2;
+    }
 
     uint32 asset_id = 1;
     string asset_balance = 2;
