@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package mlmbox.local.notification;
+
+import "mlmbox/local/type/account.proto";
+import "mlmbox/local/type/notification.proto";
+import "mlmbox/type/notification.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/local/notification;service_local_notification_pb";
+
+service Notification {
+  rpc GetStateByID (mlmbox.local.type.Account.ID) returns (mlmbox.type.Notification.State) {}
+  rpc GetStateByToken (mlmbox.local.type.Notification.Token) returns (mlmbox.type.Notification.State) {}
+
+  rpc SubscribeByID (mlmbox.local.type.Account.ID) returns (mlmbox.type.Notification.State) {}
+  rpc SubscribeByToken (mlmbox.local.type.Notification.Token) returns (mlmbox.type.Notification.State) {}
+
+  rpc UnsubscribeByID (mlmbox.local.type.Account.ID) returns (mlmbox.type.Notification.State) {}
+  rpc UnsubscribeByToken (mlmbox.local.type.Notification.Token) returns (mlmbox.type.Notification.State) {}
+}

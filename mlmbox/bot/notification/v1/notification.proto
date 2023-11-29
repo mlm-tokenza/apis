@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package mlmbox.bot.notification.v1;
+
+import "mlmbox/type/notification.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/bot/notification/v1;service_bot_notification_pb";
+
+service Notification {
+  rpc Info (mlmbox.type.Notification.ID) returns (mlmbox.type.Notification.State) {} // отобразить информацию о пользователе
+  rpc Subscribe (mlmbox.type.Notification.ID) returns (mlmbox.type.Notification.State) {} // подписаться на события в аккаунте пользователя
+  rpc Unsubscribe (mlmbox.type.Notification.ID) returns (mlmbox.type.Notification.State) {} // отменить подписку на новые события в аккаунте пользователя (могут возвращаться события из пула сгенерированные до отмены подписки).
+  rpc Events (google.protobuf.Empty) returns (stream mlmbox.type.Notification.Event) {} // возвращает поток событий
+}

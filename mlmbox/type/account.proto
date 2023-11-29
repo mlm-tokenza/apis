@@ -5,6 +5,7 @@ import "mlmbox/type/bonus.proto";
 import "mlmbox/type/farming.proto";
 import "mlmbox/type/google_authenticator.proto";
 import "mlmbox/type/relationship.proto";
+import "mlmbox/type/notification.proto";
 
 option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/type/account;account_pb";
 
@@ -76,4 +77,5 @@ message Account {
   repeated mlmbox.type.IncomeBonus income_bonuses = 4;
   string locale = 5; // language identifier (en-US, ...)
   bool is_admin = 6;
+  mlmbox.type.Notification.State.Settings notification_settings = 7;
 }

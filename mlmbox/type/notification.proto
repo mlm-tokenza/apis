@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package mlmbox.type;
+
+import "mlmbox/type/wallet.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/type/notification;notification_pb";
+
+message Notification {
+  message ID {
+    oneof unique_field {
+      uint32 account_id = 1;
+      string token = 2;
+    }
+  }
+  message State {
+    message Settings {
+      string token = 1;
+      bool subscribed = 2;
+    }
+    uint32 account_id = 1;
+    string login = 2;
+    string email = 3;
+    uint32 referral_id = 4;
+    string referral_login = 5;
+    uint32 current_rank_id = 6;
+    uint32 current_package_id = 7;
+    Settings settings = 8;
+  }
+  message Event {
+    message Partner {
+      uint32 account_id = 1;
+      string login = 2;
+      string email = 3;
+    }
+    message Career {
+      uint32 rank_id = 1;
+    }
+    message Marketing {
+      uint32 farming_package_id = 1;
+    }
+    message WalletAssetTransaction {
+      uint32 asset_id = 1;
+      mlmbox.type.Wallet.Asset.Transaction transaction = 2;
+    }
+    uint32 account_id = 1;
+    oneof event {
+      Partner partner = 2;
+      Career career = 3;
+      Marketing marketing = 4;
+      WalletAssetTransaction wallet_asset_transaction = 5;
+    }
+  }
+}
