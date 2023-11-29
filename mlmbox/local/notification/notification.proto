@@ -9,12 +9,22 @@ import "mlmbox/type/notification.proto";
 option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/local/notification;service_local_notification_pb";
 
 service Notification {
-  rpc GetStateByID (mlmbox.local.type.Account.ID) returns (mlmbox.type.Notification.State) {}
-  rpc GetStateByToken (mlmbox.local.type.Notification.Token) returns (mlmbox.type.Notification.State) {}
+  rpc GetStateByID (mlmbox.local.type.Account.ID) returns (Response) {}
+  rpc GetStateByToken (mlmbox.local.type.Notification.Token) returns (Response) {}
+  rpc SubscribeByID (mlmbox.local.type.Account.ID) returns (Response) {}
+  rpc SubscribeByToken (mlmbox.local.type.Notification.Token) returns (Response) {}
+  rpc UnsubscribeByID (mlmbox.local.type.Account.ID) returns (Response) {}
+  rpc UnsubscribeByToken (mlmbox.local.type.Notification.Token) returns (Response) {}
+}
 
-  rpc SubscribeByID (mlmbox.local.type.Account.ID) returns (mlmbox.type.Notification.State) {}
-  rpc SubscribeByToken (mlmbox.local.type.Notification.Token) returns (mlmbox.type.Notification.State) {}
-
-  rpc UnsubscribeByID (mlmbox.local.type.Account.ID) returns (mlmbox.type.Notification.State) {}
-  rpc UnsubscribeByToken (mlmbox.local.type.Notification.Token) returns (mlmbox.type.Notification.State) {}
+message Error {
+  enum ID {
+    OK = 0;
+    NOT_FOUND = 1;
+  }
+  ID error_id = 1;
+}
+message Response {
+  Error.ID error_id = 1;
+  mlmbox.type.Notification.State state = 2;
 }
