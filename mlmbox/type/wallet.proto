@@ -24,6 +24,8 @@ message Wallet {
           DEPOSIT_WALLET_TRANSFER = 6; // перевод между кошельками (получение)
           WITHDRAWAL_WALLET_TRANSFER = 7; // перевод между кошельками (отправка)
           EXCHANGE = 8; // обмен валюты
+          WITHDRAWAL_FEE = 9; // комиссия для вывода
+          BURNED = 10; // сжигание баланса
         }
         ID kind_id = 1;
       }
