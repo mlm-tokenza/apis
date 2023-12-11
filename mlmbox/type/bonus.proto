@@ -16,6 +16,7 @@ message Bonus {
     BONUS_STARTER_INIT = 7;
     BONUS_STARTER_INVITE_PARTNER = 8;
     BONUS_STARTER_OPEN_FARMING = 9;
+    BONUS_STAKING_UNLOCK = 10;
   }
   message ID {
     uint32 bonus_id = 1;

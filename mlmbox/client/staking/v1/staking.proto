@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package mlmbox.client.staking.v1;
+
+import "mlmbox/type/staking.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/mlm-tokenza/go-genproto/mlmbox/client/staking/v1;service_client_staking_pb";
+
+service Staking {
+  rpc PackageGet (mlmbox.type.Staking.Package.ID) returns (mlmbox.type.Staking.Package) {}
+  rpc PackageBuy (PackageBuyRequest) returns (mlmbox.type.Staking.Contract) {}
+  rpc PackagesAll (google.protobuf.Empty) returns (stream mlmbox.type.Staking.Package) {}
+
+  rpc Info (google.protobuf.Empty) returns (mlmbox.type.Staking.Account) {} // display data about all contracts
+  rpc ContractGet (mlmbox.type.Staking.Contract.ID) returns (mlmbox.type.Staking.Contract) {} // display data about the selected contract
+}
+
+message PackageBuyRequest {
+  uint32 package_id = 1;
+  uint32 asset_id = 2;
+  string price_value = 3;
+}
